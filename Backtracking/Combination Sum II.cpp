@@ -1,32 +1,27 @@
-void solve(vector<int>& candidates, int target,int idx,vector<vector<int>>&ans,vector<int>&path)
-    {
-        if(target==0)
-        {
-            ans.push_back(path);
-            return;
-        }
-
-        for(int i=idx;i<candidates.size();i++)
-        {
-            if(i!=idx && candidates[i]==candidates[i-1])
-                continue;
-            
-            if(candidates[i]>target) break;
-                
-            path.push_back(candidates[i]);
-            solve(candidates,target-candidates[i],i+1,ans,path);
-            path.pop_back();
-        }
+void rec(vector<int> &A,vector<int> &sub,set<vector<int>> &res,int B,int index){
+    if(!B){
+        res.insert(sub);   
+        return;
     }
-vector<vector<int> > Solution::combinationSum(vector<int>& candidates, int target) {
-    
-     sort(candidates.begin(),candidates.end());
+   
+    for(int i=index;i<A.size();i++){
+        if(B>=A[i]){
+        sub.push_back(A[i]);
+        rec(A,sub,res,B-A[i],i+1);
+        sub.pop_back();
+        }
         
-        vector<vector<int>>ans;
-        vector<int>path;
-        
-        solve(candidates,target,0,ans,path);
-       
-        return ans;
-    
+    }
+  
+}
+vector<vector<int> > Solution::combinationSum(vector<int> &A, int B) {
+       sort(A.begin(), A.end());
+    vector<int> sub;
+    set<vector<int>> res;
+    rec(A,sub,res,B,0);
+    vector<vector<int>> ans;
+    for(auto it : res){
+        ans.push_back(it);
+    }
+    return ans;
 }
